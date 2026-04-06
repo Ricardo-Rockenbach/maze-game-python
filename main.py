@@ -1,0 +1,1 @@
+print("Maze Game iniciado!")
