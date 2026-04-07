@@ -1,5 +1,6 @@
 import os
 import time
+import random
 
 
 labirinto = [
@@ -34,9 +35,8 @@ def mover_jogador(matriz, direcao):
         nova_j -= 1
     elif direcao == 'd':
         nova_j += 1
-    
+
     if matriz[nova_i][nova_j] == 'S':
-        print("Parabéns! Você encontrou a saída!")
         return 'Vitória'
     
     if matriz[nova_i][nova_j] != '#':
@@ -47,6 +47,26 @@ def mover_jogador(matriz, direcao):
 
 while True:
     comando = input("Digite o comando (w/a/s/d para mover, q para sair): ").lower()
+    
+    if comando == 'q':
+        print("Saindo do jogo. Até a próxima!")
+        break
+    
+    if comando not in ['w', 'a', 's', 'd']:
+        print("Comando inválido! Use w/a/s/d para mover ou q para sair.")
+        continue
+    
     resultado = mover_jogador(labirinto, comando)
+
+    if resultado == 'Vitória':
+        print("Parabéns! Você encontrou a saída!")
+        print("😍🥳🎉🎉🎉")
+        break  
+    elif resultado == 'Moveu':
+        mostrar_labirinto(labirinto)
+    elif resultado == 'parede':
+        print("Você bateu em uma parede! Tente outro caminho.")
+    else:
+        print("Comando inválido! Use w/a/s/d para mover ou q para sair.")
 
   
