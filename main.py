@@ -2,27 +2,43 @@ import os
 import time
 import random
 
+# geração do mapa
 
-labirinto = [
-    ['#', '#', '#', '#', '#'],
-    ['#', 'P', '.', '.', '#'],
-    ['#', '.', '#', '.', '#'],
-    ['#', '.', '.', 'S', '#'],
-    ['#', '#', '#', '#', '#']
-]
+def gerar_labirinto(tamanho):
+    labirinto = [['#' for _ in range(tamanho)] for _ in range(tamanho)]
+    i, j = 1, 1
+    fim_i, fim_j = tamanho - 2, tamanho - 2
+    labirinto[i][j] = 'P'  # Posição inicial do jogador
+
+    while (i, j) != (fim_i, fim_j):
+        if random.choice([True, False]):    
+            if i < fim_i:
+                i += 1
+        else:
+            if j < fim_j:
+                j += 1
+
+        labirinto[i][j] = '.'  # Caminho aberto
+
+    labirinto[fim_i][fim_j] = 'S'  # Posição da saída
+
+    return labirinto
 
 def mostrar_labirinto(matriz):
     for linha in matriz:
         print(' '.join(linha))
 
-mostrar_labirinto(labirinto)
+labirinto = gerar_labirinto(20)
+
+
+# Movimentação do jogador
 
 def encontrar_jogador(matriz):
     for i in range(len(matriz)):
         for j in range(len(matriz[i])):
             if matriz[i][j] == 'P':
                 return (i, j)
-            
+         
 def mover_jogador(matriz, direcao):
     i, j = encontrar_jogador(matriz)
     nova_i, nova_j = i, j
@@ -45,7 +61,13 @@ def mover_jogador(matriz, direcao):
         return 'Moveu'
     return 'parede'
 
+erros = 0
+max_erros = 5
+
 while True:
+
+    mostrar_labirinto(labirinto)
+
     comando = input("Digite o comando (w/a/s/d para mover, q para sair): ").lower()
     
     if comando == 'q':
@@ -63,9 +85,18 @@ while True:
         print("😍🥳🎉🎉🎉")
         break  
     elif resultado == 'Moveu':
-        mostrar_labirinto(labirinto)
+        os.system('cls' if os.name == 'nt' else 'clear')
+
     elif resultado == 'parede':
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print("😢💥")
         print("Você bateu em uma parede! Tente outro caminho.")
+        erros += 1
+        
+        if erros == max_erros:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print("Você excedeu o número máximo de erros. Game Over! 💣😥")
+            break
     else:
         print("Comando inválido! Use w/a/s/d para mover ou q para sair.")
 
