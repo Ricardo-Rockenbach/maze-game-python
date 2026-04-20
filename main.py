@@ -2,14 +2,23 @@ import os
 import time
 import random
 
+# Parametros iniciais:
+tempo_inicial = time.time()
+nome_jogador = input("Digite seu nome: ")
+print(f"Bem-vindo ao Labirinto, {nome_jogador}!")
+print("Instruções: Use w/a/s/d para mover para cima/esquerda/baixo/direita. \nEncontre a saída (🚪) para vencer o jogo. Cuidado com as paredes (#)!")
+
+
 # geração do mapa
 
 def gerar_labirinto(tamanho):
     labirinto = [['#' for _ in range(tamanho)] for _ in range(tamanho)]
+    
     i, j = 1, 1
     fim_i, fim_j = tamanho - 2, tamanho - 2
     labirinto[i][j] = 'P'  # Posição inicial do jogador
 
+# Fase 01 - Gerar caminho garantido do início ao fim
     while (i, j) != (fim_i, fim_j):
         if random.choice([True, False]):    
             if i < fim_i:
@@ -20,7 +29,15 @@ def gerar_labirinto(tamanho):
 
         labirinto[i][j] = '.'  # Caminho aberto
 
-    labirinto[fim_i][fim_j] = 'S'  # Posição da saída
+    labirinto[fim_i][fim_j] = '🚪'  # Posição da saída
+
+# Fase 02 - Adicionar caminhos aleatórios para aumentar a dificuldade
+    for _ in range(tamanho * 3):
+        i = random.randint(1, tamanho - 2)
+        j = random.randint(1, tamanho - 2)
+        
+        if labirinto[i][j] == '#':
+            labirinto[i][j] = '.'
 
     return labirinto
 
@@ -52,7 +69,7 @@ def mover_jogador(matriz, direcao):
     elif direcao == 'd':
         nova_j += 1
 
-    if matriz[nova_i][nova_j] == 'S':
+    if matriz[nova_i][nova_j] == '🚪':
         return 'Vitória'
     
     if matriz[nova_i][nova_j] != '#':
@@ -83,6 +100,7 @@ while True:
     if resultado == 'Vitória':
         print("Parabéns! Você encontrou a saída!")
         print("😍🥳🎉🎉🎉")
+        print(f"Tempo gasto: {time.time() - tempo_inicial:.2f} segundos")
         break  
     elif resultado == 'Moveu':
         os.system('cls' if os.name == 'nt' else 'clear')
