@@ -194,71 +194,71 @@ def mover_jogador(matriz, direcao):
     return 'parede'
 
 # Loop principal do jogo:
-
-while True:
-    menu_inicial()
-
-    tempo_inicial, nome_jogador = parametros_iniciais()
-
-    labirinto = gerar_labirinto(20)
-
-    passos = 0
-    erros = 0
-    max_erros = 5
-    
+if __name__ == "__main__":
     while True:
+        menu_inicial()
 
-        limpar_tela()
-        mostrar_labirinto(labirinto)
+        tempo_inicial, nome_jogador = parametros_iniciais()
 
-        comando = input("Digite o comando (w/a/s/d para mover, q para sair): ").lower()
+        labirinto = gerar_labirinto(20)
+
+        passos = 0
+        erros = 0
+        max_erros = 5
         
-        if comando == 'q':
-            print("Saindo do jogo. Até a próxima!")
-            break
-        
-        if comando not in ['w', 'a', 's', 'd']:
-            print("Comando inválido! Use w/a/s/d para mover ou q para sair.")
-            continue
-        else: 
-            passos += 1
-        
-        resultado = mover_jogador(labirinto, comando)
+        while True:
 
-        if resultado == 'Vitória':
-            print(f"Parabéns, {nome_jogador}! Você encontrou a saída!")
-            print("😍🥳🎉🎉🎉")
-            print(f"Passos dados: {passos}")
-            print(f"Tempo gasto: {time.time() - tempo_inicial:.2f} segundos")
-            print(f"Erros cometidos: {erros}")
-            tempo_gasto = time.time() - tempo_inicial
-            pontos = sistema_pontuacao(passos, tempo_gasto, erros)
-            print(f"Pontos obtidos: {pontos}")
-
-            salvar_ranking(nome_jogador, pontos, passos, tempo_gasto, erros)
-            input("Pressione Enter para ver o ranking...")
-            mostrar_ranking()
-            break  
-
-        elif resultado == 'parede':
             limpar_tela()
-            print("😢💥")
-            print("Você bateu em uma parede! Tente outro caminho.")
-            print(f"Erros: {erros + 1}/{max_erros}")
             mostrar_labirinto(labirinto)
-            input("Pressione Enter para continuar...")
-            erros += 1
+
+            comando = input("Digite o comando (w/a/s/d para mover, q para sair): ").lower()
             
-            if erros == max_erros:
-                limpar_tela()
-                print("💀 GAME OVER 💀")
-                print(f"{nome_jogador}, você excedeu o limite de erros!")
+            if comando == 'q':
+                print("Saindo do jogo. Até a próxima!")
+                break
+            
+            if comando not in ['w', 'a', 's', 'd']:
+                print("Comando inválido! Use w/a/s/d para mover ou q para sair.")
+                continue
+            else: 
+                passos += 1
+            
+            resultado = mover_jogador(labirinto, comando)
+
+            if resultado == 'Vitória':
+                print(f"Parabéns, {nome_jogador}! Você encontrou a saída!")
+                print("😍🥳🎉🎉🎉")
                 print(f"Passos dados: {passos}")
                 print(f"Tempo gasto: {time.time() - tempo_inicial:.2f} segundos")
-                input("Pressione Enter para voltar ao menu inicial...")
-                break
-        else:
-            print("Comando inválido! Use w/a/s/d para mover ou q para sair.")
+                print(f"Erros cometidos: {erros}")
+                tempo_gasto = time.time() - tempo_inicial
+                pontos = sistema_pontuacao(passos, tempo_gasto, erros)
+                print(f"Pontos obtidos: {pontos}")
+
+                salvar_ranking(nome_jogador, pontos, passos, tempo_gasto, erros)
+                input("Pressione Enter para ver o ranking...")
+                mostrar_ranking()
+                break  
+
+            elif resultado == 'parede':
+                limpar_tela()
+                print("😢💥")
+                print("Você bateu em uma parede! Tente outro caminho.")
+                print(f"Erros: {erros + 1}/{max_erros}")
+                mostrar_labirinto(labirinto)
+                input("Pressione Enter para continuar...")
+                erros += 1
+                
+                if erros == max_erros:
+                    limpar_tela()
+                    print("💀 GAME OVER 💀")
+                    print(f"{nome_jogador}, você excedeu o limite de erros!")
+                    print(f"Passos dados: {passos}")
+                    print(f"Tempo gasto: {time.time() - tempo_inicial:.2f} segundos")
+                    input("Pressione Enter para voltar ao menu inicial...")
+                    break
+            else:
+                print("Comando inválido! Use w/a/s/d para mover ou q para sair.")
 
 
 
